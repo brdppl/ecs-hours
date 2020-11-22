@@ -1,0 +1,17 @@
+#home {
+    padding-top: 50px;
+    padding-bottom: 50px;
+
+    mat-card {
+        .card-title {
+            mat-card-title {
+                font-size: 22px;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 959px) {
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+}

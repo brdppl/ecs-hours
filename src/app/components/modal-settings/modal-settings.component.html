@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Configurações</h2>
+<mat-dialog-content>
+    <form [formGroup]="settingsForm" margin orientation="bottom" value="10px">
+        <mat-form-field>
+            <mat-label>Meu e-mail</mat-label>
+            <input matInput type="email" formControlName="email">
+        </mat-form-field>
+    </form>
+    <mat-slide-toggle color="primary" [checked]="darkMode" (click)="toggleDarkMode()">Modo escuro</mat-slide-toggle>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end center">
+  <button mat-button (click)="close()">Fechar</button>
+  <button mat-flat-button color="primary" cdkFocusInitial (click)="save()">Salvar</button>
+</mat-dialog-actions>

@@ -28,6 +28,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -123,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "ecs-hours"
+    }
+  },
+  "defaultProject": "ecs-hours",
+  "cli": {
+    "analytics": "c6ba327f-79e2-4013-b86a-aee9ab0db5cf"
+  }
 }

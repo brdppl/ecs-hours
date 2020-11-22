@@ -1,0 +1,45 @@
+<section id="home" fxLayoutAlign="center center">
+    <div fxFlex="70" fxFlex.lt-md="95">
+        <form [formGroup]="hoursForm" fxLayout="column" fxLayoutGap="15px">
+            <mat-card *ngFor="let item of week; let i = index">
+                <div class="card-title" margin orientation="bottom" value="20px" fxLayoutAlign="space-between center">
+                    <mat-card-title>{{item.day}}</mat-card-title>
+                    <button mat-icon-button (click)="clearHours(item, i)" matTooltip="Limpar horários" matTooltipPosition="above">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <mat-card-content fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="15px">
+                    <mat-form-field>
+                        <mat-label>Início 1</mat-label>
+                        <input
+                            matInput type="text" [formControlName]="item.firstStart+i" (change)="saveOnCache($event)"
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                        <mat-icon matSuffix>query_builder</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Saída 1</mat-label>
+                        <input
+                            matInput type="text" [formControlName]="item.firstEnd+i" (change)="saveOnCache($event)"
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                        <mat-icon matSuffix>watch_later</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Início 2</mat-label>
+                        <input
+                            matInput type="text" [formControlName]="item.secondStart+i" (change)="saveOnCache($event)"
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                        <mat-icon matSuffix>query_builder</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Saída 2</mat-label>
+                        <input
+                            matInput type="text" [formControlName]="item.secondEnd+i" (change)="saveOnCache($event)"
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                        <mat-icon matSuffix>watch_later</mat-icon>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+            <button mat-raised-button color="primary" (click)="send()">Enviar</button>
+        </form>
+    </div>
+</section>

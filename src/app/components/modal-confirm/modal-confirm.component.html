@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Confirme seus horários</h2>
+<mat-dialog-content>
+    <div *ngFor="let item of hours; let last = last">
+        <p margin orientation="top" value="15px">{{item.day}}</p>
+        <div fxLayoutAlign="start center">
+            <p *ngFor="let hour of item.hours; let first = first; let last = last">
+                <span [hidden]="first">-</span><b> {{hour}} </b><span [hidden]="last">-</span>
+            </p>
+        </div>
+        <mat-divider [hidden]="last"></mat-divider>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions fxLayoutAlign="end center">
+  <button mat-button (click)="close()">Cancelar</button>
+  <button mat-flat-button color="primary" cdkFocusInitial (click)="send()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Confirmar</span>
+      <span class="spinner-border spinner-border-sm" *ngIf="isLoading"></span>
+  </button>
+</mat-dialog-actions>
