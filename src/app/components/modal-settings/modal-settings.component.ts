@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { UtilsService } from 'src/app/services/utils.service';
+import { Storage } from 'src/app/enums/storage.enum';
 
 @Component({
   selector: 'app-modal-settings',
@@ -21,7 +22,7 @@ export class ModalSettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.prepareForm()
-    if(this.util.getStorage('dark-mode')) this.darkMode = this.util.getStorage('dark-mode')
+    if(this.util.getStorage(Storage.DARK_MODE)) this.darkMode = this.util.getStorage(Storage.DARK_MODE)
   }
 
   public close(res: boolean = false): void {
@@ -30,25 +31,27 @@ export class ModalSettingsComponent implements OnInit {
 
   private prepareForm(): void {
     this.settingsForm = this.fb.group({
-      email: this.fb.control('')
+      email: this.fb.control(''),
+      clearOnSubmit: this.fb.control(false),
+      clearOnChangeWeek: this.fb.control(false)
     })
-    if(this.util.getStorage('settings')) this.settingsForm.patchValue(this.util.getStorage('settings'))
+    if(this.util.getStorage(Storage.SETTINGS)) this.settingsForm.patchValue(this.util.getStorage(Storage.SETTINGS))
   }
 
   public save(): void {
-    this.util.setStorage('settings', this.settingsForm.value)
-    this.util.setStorage('dark-mode', this.darkMode)
+    this.util.setStorage(Storage.SETTINGS, this.settingsForm.value)
+    this.util.setStorage(Storage.DARK_MODE, this.darkMode)
     this.util.openToast('Configurações salvas')
     this.close()
   }
 
-  public toggleDarkMode(): void {
-    this.darkMode = !this.darkMode
-    if(this.darkMode) {
-      document.getElementsByTagName('body')[0].classList.remove('dark-theme')
-    } else {
+  public toggleDarkMode(isDark: boolean) {
+    if(isDark) {
       document.getElementsByTagName('body')[0].classList.add('dark-theme')
+    } else {
+      document.getElementsByTagName('body')[0].classList.remove('dark-theme')
     }
+    this.darkMode = isDark
   }
 
 }

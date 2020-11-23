@@ -4,7 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as _ from 'lodash';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { ToastComponent } from '../toast/toast.component';
+import { Storage } from 'src/app/enums/storage.enum';
+import { Days } from 'src/app/enums/days.enum';
 
 @Component({
   selector: 'app-modal-confirm',
@@ -38,7 +39,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('0')) {
         this.hours.forEach(val => {
-          if(val.day.includes('segunda')) {
+          if(val.day.includes(Days.SEGUNDA)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -46,7 +47,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('1')) {
         this.hours.forEach(val => {
-          if(val.day.includes('terça')) {
+          if(val.day.includes(Days.TERCA)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -54,7 +55,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('2')) {
         this.hours.forEach(val => {
-          if(val.day.includes('quarta')) {
+          if(val.day.includes(Days.QUARTA)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -62,7 +63,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('3')) {
         this.hours.forEach(val => {
-          if(val.day.includes('quinta')) {
+          if(val.day.includes(Days.QUINTA)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -70,7 +71,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('4')) {
         this.hours.forEach(val => {
-          if(val.day.includes('sexta')) {
+          if(val.day.includes(Days.SEXTA)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -78,7 +79,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('5')) {
         this.hours.forEach(val => {
-          if(val.day.includes('sábado')) {
+          if(val.day.includes(Days.SABADO)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -86,7 +87,7 @@ export class ModalConfirmComponent implements OnInit {
       }
       if(el.includes('6')) {
         this.hours.forEach(val => {
-          if(val.day.includes('domingo')) {
+          if(val.day.includes(Days.DOMINGO)) {
             val.hours.push(this.data[el])
             _.remove(val.hours, e => e !== '' && !e.includes(':'))
           }
@@ -101,26 +102,21 @@ export class ModalConfirmComponent implements OnInit {
 
   public send(): void {
     const objData: any = {
-      email: this.util.getStorage('settings').email,
+      email: this.util.getStorage(Storage.SETTINGS).email,
       hours: this.hours
     }
 
     this.isLoading = true
     this.api.post('api/send-mail', objData).subscribe((data: any) => {
       this.isLoading = false
-      this.openToast(data.msg)
+      this.util.openToast(data.msg)
+      if(this.util.getStorage(Storage.SETTINGS).clearOnSubmit)
+        this.util.emitReloadForm(true)
       if(data.status) {
         this.close(data.status)
       }
     }, (err: any) => {
       this.isLoading = false
-    })
-  }
-
-  private openToast(data: string): void {
-    this.toast.openFromComponent(ToastComponent, {
-      duration: 4000,
-      data
     })
   }
 }

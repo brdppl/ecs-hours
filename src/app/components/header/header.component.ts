@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { UtilsService } from 'src/app/services/utils.service';
 import { ModalSettingsComponent } from '../modal-settings/modal-settings.component';
 
 @Component({
@@ -12,7 +13,8 @@ export class HeaderComponent implements OnInit {
   public titleApp = 'ECS Hours'
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private util: UtilsService
   ) { }
 
   ngOnInit(): void { }
@@ -22,5 +24,10 @@ export class HeaderComponent implements OnInit {
       width: '500px',
       maxWidth: ''
     })
+  }
+
+  public clearAll(): void {
+    if(confirm('Deseja mesmo limpar todos os horários da semana?'))
+      this.util.emitReloadForm(true)
   }
 }

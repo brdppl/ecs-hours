@@ -13,28 +13,28 @@
                         <mat-label>Início 1</mat-label>
                         <input
                             matInput type="text" [formControlName]="item.firstStart+i" (change)="saveOnCache($event)"
-                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" autocomplete="off">
                         <mat-icon matSuffix>query_builder</mat-icon>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Saída 1</mat-label>
                         <input
                             matInput type="text" [formControlName]="item.firstEnd+i" (change)="saveOnCache($event)"
-                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" autocomplete="off">
                         <mat-icon matSuffix>watch_later</mat-icon>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Início 2</mat-label>
                         <input
                             matInput type="text" [formControlName]="item.secondStart+i" (change)="saveOnCache($event)"
-                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" autocomplete="off">
                         <mat-icon matSuffix>query_builder</mat-icon>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Saída 2</mat-label>
                         <input
                             matInput type="text" [formControlName]="item.secondEnd+i" (change)="saveOnCache($event)"
-                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false">
+                            mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" autocomplete="off">
                         <mat-icon matSuffix>watch_later</mat-icon>
                     </mat-form-field>
                 </mat-card-content>

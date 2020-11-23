@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastComponent } from '../components/toast/toast.component';
 
@@ -11,6 +11,8 @@ export class UtilsService {
     private toast: MatSnackBar
   ) { }
 
+  @Output() public reloadForm = new EventEmitter<boolean>()
+
   public getStorage = (key: string) => JSON.parse(window.localStorage.getItem(key))
   public setStorage = (key: string, data: any) => window.localStorage.setItem(key, JSON.stringify(data))
   public delStorage = (key: string) => window.localStorage.removeItem(key)
@@ -21,4 +23,10 @@ export class UtilsService {
       data
     })
   }
+
+  public emitReloadForm(value: boolean): void {
+    this.reloadForm.emit(value)
+  }
+
+  public receiveReloadForm = () => this.reloadForm
 }

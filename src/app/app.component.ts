@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UtilsService } from './services/utils.service';
+import { Storage } from 'src/app/enums/storage.enum';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if(this.util.getStorage('dark-mode')) {  
+    if(this.util.getStorage(Storage.DARK_MODE)) {  
       document.getElementsByTagName('body')[0].classList.add('dark-theme')
     } else {
       document.getElementsByTagName('body')[0].classList.remove('dark-theme')

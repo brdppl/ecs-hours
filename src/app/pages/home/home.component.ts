@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { ModalConfirmComponent } from 'src/app/components/modal-confirm/modal-confirm.component';
-import { ToastComponent } from 'src/app/components/toast/toast.component';
 import { UtilsService } from 'src/app/services/utils.service';
+import { Storage } from 'src/app/enums/storage.enum';
 
 @Component({
   selector: 'app-home',
@@ -25,6 +25,13 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getCurrentWeek()
     this.prepareForm()
+
+    this.util.receiveReloadForm().subscribe(data => {
+      if(data) {
+        this.util.delStorage(Storage.FORM)
+        this.prepareForm()
+      }
+    })
   }
 
   public send(): void {
@@ -41,9 +48,9 @@ export class HomeComponent implements OnInit {
   private getCurrentWeek(): void {
     const currentDate = moment()
     const weekStart = currentDate.clone().startOf('isoWeek')
-    const weekEnd = currentDate.clone().endOf('isoWeek')
+    const currentWeek = currentDate.isoWeek()
     const days = []
-  
+
     for (let i = 0; i <= 6; i++) {
       days.push(moment(weekStart).locale('pt-BR').add(i, 'days').format('dddd, D [de] MMMM'))
     }
@@ -57,6 +64,18 @@ export class HomeComponent implements OnInit {
         secondEnd: 'secondEnd'
       })
     })
+
+    if(!this.util.getStorage(Storage.CURRENT_WEEK)) {
+      this.util.setStorage(Storage.CURRENT_WEEK, currentWeek)
+    } else {
+      if(this.util.getStorage(Storage.CURRENT_WEEK) !== currentWeek) {
+        if(this.util.getStorage(Storage.SETTINGS).clearOnChangeWeek) {
+          this.util.delStorage(Storage.FORM)
+          this.prepareForm()
+        }
+        this.util.setStorage(Storage.CURRENT_WEEK, currentWeek)
+      }
+    }
   }
 
   private prepareForm(): void {
@@ -69,7 +88,7 @@ export class HomeComponent implements OnInit {
       form[this.week[i].secondEnd+i] = this.fb.control('')
     }
     this.hoursForm = this.fb.group(form)
-    if(this.util.getStorage('form')) this.hoursForm.patchValue(this.util.getStorage('form'))
+    if(this.util.getStorage(Storage.FORM)) this.hoursForm.patchValue(this.util.getStorage(Storage.FORM))
   }
 
   public saveOnCache(ev: any): void {
@@ -80,31 +99,33 @@ export class HomeComponent implements OnInit {
       [formControlName]: value
     })
 
-    this.util.setStorage('form', this.hoursForm.value)
+    this.util.setStorage(Storage.FORM, this.hoursForm.value)
     this.util.openToast('Rascunho salvo')
   }
 
   public clearHours(item: any, index: number): void {
-    Object.keys(this.hoursForm.value).forEach(el => {
-      if(item.firstStart+index === el) {
-        this.hoursForm.patchValue({
-          [el]: ''
-        })
-      } else if(item.firstEnd+index === el) {
-        this.hoursForm.patchValue({
-          [el]: ''
-        })
-      } else if(item.secondStart+index === el) {
-        this.hoursForm.patchValue({
-          [el]: ''
-        })
-      } else if(item.secondEnd+index === el) {
-        this.hoursForm.patchValue({
-          [el]: ''
-        })
-      }
-      this.util.setStorage('form', this.hoursForm.value)
-      this.util.openToast('Rascunho salvo')
-    })
+    if(confirm('Deseja mesmo limpar os horários deste dia?')) {
+      Object.keys(this.hoursForm.value).forEach(el => {
+        if(item.firstStart+index === el) {
+          this.hoursForm.patchValue({
+            [el]: ''
+          })
+        } else if(item.firstEnd+index === el) {
+          this.hoursForm.patchValue({
+            [el]: ''
+          })
+        } else if(item.secondStart+index === el) {
+          this.hoursForm.patchValue({
+            [el]: ''
+          })
+        } else if(item.secondEnd+index === el) {
+          this.hoursForm.patchValue({
+            [el]: ''
+          })
+        }
+        this.util.setStorage(Storage.FORM, this.hoursForm.value)
+        this.util.openToast('Rascunho salvo')
+      })
+    }
   }
 }

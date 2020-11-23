@@ -5,8 +5,12 @@
             <mat-label>Meu e-mail</mat-label>
             <input matInput type="email" formControlName="email">
         </mat-form-field>
+        <div>
+            <mat-checkbox color="primary" formControlName="clearOnSubmit">Limpar horários ao enviar</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="clearOnChangeWeek">Limpar horários quando trocar de semana</mat-checkbox>
+        </div>
     </form>
-    <mat-slide-toggle color="primary" [checked]="darkMode" (click)="toggleDarkMode()">Modo escuro</mat-slide-toggle>
+    <mat-slide-toggle color="primary" [(ngModel)]="darkMode" (change)="toggleDarkMode(darkMode)">Modo escuro</mat-slide-toggle>
 </mat-dialog-content>
 <mat-dialog-actions fxLayoutAlign="end center">
   <button mat-button (click)="close()">Fechar</button>

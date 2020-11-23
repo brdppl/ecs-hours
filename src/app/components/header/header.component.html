@@ -1,7 +1,10 @@
 <mat-toolbar color="primary" fxLayoutAlign="space-between center">
     <span class="nav-title">{{titleApp}}</span>
     <div>
-        <button mat-icon-button (click)="settings()">
+        <button mat-icon-button (click)="clearAll()" matTooltip="Limpar todos os horários">
+            <mat-icon>delete</mat-icon>
+        </button>
+        <button mat-icon-button (click)="settings()" matTooltip="Configurações">
             <mat-icon>settings</mat-icon>
         </button>
     </div>
