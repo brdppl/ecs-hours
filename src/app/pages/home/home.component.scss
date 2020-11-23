@@ -1,17 +1,76 @@
 #home {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    .my-container {
+        padding-top: 50px;
+        padding-bottom: 90px;
+        position: relative;
 
-    mat-card {
-        .card-title {
-            mat-card-title {
-                font-size: 22px;
+        mat-card {
+            .card-title {
+                mat-card-title {
+                    font-size: 22px;
+                }
             }
         }
-    }
 
-    @media only screen and (max-width: 959px) {
-        padding-top: 15px;
-        padding-bottom: 15px;
+        .btn-send {
+            position: fixed;
+            bottom: 15px; right: 15px;
+            transition: 0.3s;
+
+            span {
+                font-size: 18px;
+                text-transform: uppercase;
+                margin-right: 10px;
+            }
+
+            &:not(.btn-fixed-bottom) {
+                span {
+                    position: absolute;
+                    top: 50%; left: 37.5%;
+                    transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+                    opacity: 0;
+                    transition: 0.3s;
+                    text-transform: uppercase;
+                    font-size: 14px;
+                }
+
+                mat-icon {
+                    position: absolute;
+                    top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    -ms-transform: translate(-50%, -50%);
+                    transition: 0.3s;
+                }
+            }
+            
+            &:hover {
+                width: 115px;
+                border-radius: 80px;
+                transition: 0.3s;
+
+                span {
+                    opacity: 1;
+                    transition: 0.3s;
+                }
+
+                mat-icon {
+                    left: 80%;
+                    transition: 0.3s;
+                }
+            }
+
+            &.btn-fixed-bottom {
+                position: absolute;
+                bottom: 15px; right: 0;
+                width: 100%;
+                border-radius: 4px;
+            }
+        }
+
+        @media only screen and (max-width: 959px) {
+            padding-top: 15px;
+            overflow: hidden;
+        }
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
@@ -15,7 +15,19 @@ export class HomeComponent implements OnInit {
   public hoursForm: FormGroup
 
   public week: Array<any> = new Array<any>()
-  
+
+  public endOfScroll: boolean = false
+
+  @HostListener('window:scroll', ['$event']) onWindowScroll(): void {
+    const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight
+    const max = document.documentElement.scrollHeight
+    if(pos > max-20) {
+      this.endOfScroll = true
+    } else {
+      this.endOfScroll = false
+    }
+  }
+
   constructor(
     private fb: FormBuilder,
     private util: UtilsService,
@@ -37,11 +49,8 @@ export class HomeComponent implements OnInit {
   public send(): void {
     const dialogRef = this.dialog.open(ModalConfirmComponent, {
       width: '700px',
-      maxWidth: '',
+      maxWidth: '90%',
       data: this.hoursForm.value
-    })
-    dialogRef.afterClosed().subscribe(data => {
-      console.log('modal fechado', data)
     })
   }
 

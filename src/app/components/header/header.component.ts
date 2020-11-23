@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   public settings(): void {
     const dialogRef = this.dialog.open(ModalSettingsComponent, {
       width: '500px',
-      maxWidth: ''
+      maxWidth: '90%'
     })
   }
 

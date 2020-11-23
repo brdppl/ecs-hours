@@ -1,5 +1,5 @@
 <section id="home" fxLayoutAlign="center center">
-    <div fxFlex="70" fxFlex.lt-md="95">
+    <div class="my-container" fxFlex="70" fxFlex.lt-md="95">
         <form [formGroup]="hoursForm" fxLayout="column" fxLayoutGap="15px">
             <mat-card *ngFor="let item of week; let i = index">
                 <div class="card-title" margin orientation="bottom" value="20px" fxLayoutAlign="space-between center">
@@ -10,7 +10,7 @@
                 </div>
                 <mat-card-content fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="15px">
                     <mat-form-field>
-                        <mat-label>Início 1</mat-label>
+                        <mat-label>Entrada 1</mat-label>
                         <input
                             matInput type="text" [formControlName]="item.firstStart+i" (change)="saveOnCache($event)"
                             mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" autocomplete="off">
@@ -24,7 +24,7 @@
                         <mat-icon matSuffix>watch_later</mat-icon>
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-label>Início 2</mat-label>
+                        <mat-label>Entrada 2</mat-label>
                         <input
                             matInput type="text" [formControlName]="item.secondStart+i" (change)="saveOnCache($event)"
                             mask="Hh:m0" [leadZeroDateTime]="true" [dropSpecialCharacters]="false" autocomplete="off">
@@ -39,7 +39,11 @@
                     </mat-form-field>
                 </mat-card-content>
             </mat-card>
-            <button mat-raised-button color="primary" (click)="send()">Enviar</button>
+            <!-- <button mat-raised-button color="primary" (click)="send()">Enviar</button> -->
         </form>
+        <button mat-fab color="primary" class="btn-send" (click)="send()" [class.btn-fixed-bottom]="endOfScroll">
+            <span>Enviar</span>
+            <mat-icon>send</mat-icon>
+        </button>
     </div>
 </section>
