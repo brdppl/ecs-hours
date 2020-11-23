@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as _ from 'lodash';
 import { ApiService } from 'src/app/services/api.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Storage } from 'src/app/enums/storage.enum';
 import { Days } from 'src/app/enums/days.enum';
+import { ModalSettingsComponent } from '../modal-settings/modal-settings.component';
 
 @Component({
   selector: 'app-modal-confirm',
@@ -22,7 +23,8 @@ export class ModalConfirmComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private toast: MatSnackBar,
     private api: ApiService,
-    private util: UtilsService
+    private util: UtilsService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -101,22 +103,30 @@ export class ModalConfirmComponent implements OnInit {
   }
 
   public send(): void {
-    const objData: any = {
-      email: this.util.getStorage(Storage.SETTINGS).email,
-      hours: this.hours
-    }
-
-    this.isLoading = true
-    this.api.post('api/send-mail', objData).subscribe((data: any) => {
-      this.isLoading = false
-      this.util.openToast(data.msg)
-      if(this.util.getStorage(Storage.SETTINGS).clearOnSubmit)
-        this.util.emitReloadForm(true)
-      if(data.status) {
-        this.close(data.status)
+    if(this.util.getStorage(Storage.SETTINGS) && this.util.getStorage(Storage.SETTINGS).email) {
+      const objData: any = {
+        email: this.util.getStorage(Storage.SETTINGS).email,
+        hours: this.hours
       }
-    }, (err: any) => {
-      this.isLoading = false
-    })
+
+      this.isLoading = true
+      this.api.post('api/send-mail', objData).subscribe((data: any) => {
+        this.isLoading = false
+        this.util.openToast(data.msg)
+        if(this.util.getStorage(Storage.SETTINGS).clearOnSubmit)
+          this.util.emitReloadForm(true)
+        if(data.status) {
+          this.close(data.status)
+        }
+      }, (err: any) => {
+        this.isLoading = false
+      })
+    } else {
+      this.util.openToast('Configure seu e-mail antes de enviar')
+      this.dialog.open(ModalSettingsComponent, {
+        width: '500px',
+        maxWidth: ''
+      })
+    }
   }
 }
