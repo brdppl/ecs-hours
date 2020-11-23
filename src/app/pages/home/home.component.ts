@@ -17,11 +17,14 @@ export class HomeComponent implements OnInit {
   public week: Array<any> = new Array<any>()
 
   public endOfScroll: boolean = false
+  private mobileScreen: boolean = window.innerWidth < 959
 
   @HostListener('window:scroll', ['$event']) onWindowScroll(): void {
     const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight
     const max = document.documentElement.scrollHeight
-    if(pos > max-20) {
+    const diff = this.mobileScreen ? 90 : 30
+
+    if(pos > max-diff) {
       this.endOfScroll = true
     } else {
       this.endOfScroll = false
